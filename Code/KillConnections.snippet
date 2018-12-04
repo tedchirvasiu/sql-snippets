@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>KillConnections</Title>
+            <Shortcut>kc</Shortcut>
+			<Description>Kill connections to a specific database.</Description>
+			<Author>Unknown</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>DbName</ID>
+					<ToolTip>Name of the database to kill connections to.</ToolTip>
+					<Default>DbName</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="SQL">
+		<![CDATA[USE master;
+
+DECLARE @kill varchar(8000); SET @kill = '';  
+SELECT @kill = @kill + 'kill ' + CONVERT(varchar(5), spid) + ';'  
+FROM master..sysprocesses  
+WHERE dbid = db_id('$DbName$')
+
+EXEC(@kill);]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
